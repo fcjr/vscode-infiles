@@ -79,7 +79,7 @@ function detectLanguage(fileName: string|undefined): string {
 		case 'bash':
 			return 'shellscript';
 		default:
-			return 'plaintext';
+			return '';
 	}
 } 
 
