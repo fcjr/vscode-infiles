@@ -3,6 +3,7 @@
 	"displayName": "In Files",
 	"description": "VSCode support for \".in\" template files.",
 	"version": "0.0.1",
+    "publisher": "fcjr",
     "engines": {
         "vscode": "^1.38.0"
     },
