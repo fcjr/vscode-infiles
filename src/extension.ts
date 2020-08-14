@@ -5,23 +5,83 @@ import * as vscode from 'vscode';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "in-files" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('in-files.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from In Files!');
-	});
-
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(vscode.workspace.onDidOpenTextDocument(doc => {
+		checkForIn(vscode.window.activeTextEditor);
+		let editor = vscode.window.visibleTextEditors.find(e => e.document === doc);
+			if (editor) {
+				checkForIn(editor);
+			}
+	}));
 }
+
+function checkForIn(editor: vscode.TextEditor|undefined): void {
+	if (!editor || !editor.document || editor.document.isUntitled) {
+		return;
+	}
+	try {
+		let fileName = editor.document.fileName;
+		let lastDot = fileName.lastIndexOf('.');
+		if (lastDot === -1) {
+			return;
+		}
+		let fileExt = fileName.slice(lastDot);
+		if (fileExt !== '.in') {
+			return;
+		}
+		let realFilename = fileName.slice(0, lastDot);
+		let language = detectLanguage(realFilename);
+
+		if (language && language.length > 0) {
+			vscode.languages.getLanguages().then(codelangs => {
+				let codelang = codelangs.find(codelang => codelang.toLowerCase() === language.toLowerCase());
+				if (codelang) {
+					console.log('[in-files] setting language to ' + codelang);
+					vscode.languages.setTextDocumentLanguage(editor.document, codelang);
+				}
+			});
+		}
+	} catch (err) {
+		console.error(err);
+	}
+}
+
+function detectLanguage(fileName: string|undefined): string {
+	if (fileName === undefined) {
+		return '';
+	}
+	let lastDot = fileName.lastIndexOf('.');
+	if (lastDot === -1) {
+		return '';
+	}
+	let fileExt = fileName.slice(lastDot);
+	switch (fileExt.substring(1).toLowerCase()) {
+		case 'swift':
+			return 'swift';
+		case 'json':
+			return 'json';
+		case 'json5':
+			return 'json5';
+		case 'go':
+			return 'go';
+		case 'c':
+		case 'h':
+			return 'c';
+		case 'jsx':
+			return 'javascriptreact';
+		case 'js':
+			return 'javascript';
+		case 'cpp':
+			return 'cpp';
+		case 'sh':
+		case 'zsh':
+		case 'ksh':
+		case 'csh':
+		case 'bash':
+			return 'shellscript';
+		default:
+			return 'plaintext';
+	}
+} 
 
 // this method is called when your extension is deactivated
 export function deactivate() {}

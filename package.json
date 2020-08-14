@@ -3,31 +3,21 @@
 	"displayName": "In Files",
 	"description": "VSCode support for \".in\" template files.",
 	"version": "0.0.1",
-	"engines": {
-		"vscode": "^1.48.0"
-	},
+    "engines": {
+        "vscode": "^1.38.0"
+    },
 	"categories": [
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:in-files.helloWorld"
+		"*"
 	],
 	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "in-files.helloWorld",
-				"title": "Hello World"
-			}
-		]
-	},
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
 		"compile": "tsc -p ./",
 		"lint": "eslint src --ext ts",
-		"watch": "tsc -watch -p ./",
-		"pretest": "yarn run compile && yarn run lint",
-		"test": "node ./out/test/runTest.js"
+		"watch": "tsc -watch -p ./"
 	},
 	"devDependencies": {
 		"@types/vscode": "^1.48.0",
