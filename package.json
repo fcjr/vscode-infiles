@@ -4,6 +4,15 @@
 	"description": "VSCode support for \".in\" template files.",
 	"version": "0.0.1",
 	"publisher": "fcjr",
+	"license": "MIT",
+	"homepage": "https://github.com/fcjr/vscode-infiles",
+	"bugs": {
+	  "url": "https://github.com/fcjr/vscode-infiles/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "github.com/fcjr/vscode-infiles.git"
+	  },
 	"engines": {
 		"vscode": "^1.38.0"
 	},
