@@ -6,12 +6,12 @@ import * as vscode from 'vscode';
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.workspace.onDidOpenTextDocument(doc => {
-		checkForIn(vscode.window.activeTextEditor);
 		let editor = vscode.window.visibleTextEditors.find(e => e.document === doc);
 			if (editor) {
 				checkForIn(editor);
 			}
 	}));
+	checkForIn(vscode.window.activeTextEditor);
 }
 
 function checkForIn(editor: vscode.TextEditor|undefined): void {
@@ -78,6 +78,8 @@ function detectLanguage(fileName: string|undefined): string {
 		case 'csh':
 		case 'bash':
 			return 'shellscript';
+		case 'bat':
+			return 'bat';
 		default:
 			return '';
 	}
