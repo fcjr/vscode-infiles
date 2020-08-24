@@ -2,7 +2,7 @@
 	"name": "in-files",
 	"displayName": "In Files",
 	"description": "VSCode support for \".in\" template files.",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "fcjr",
 	"license": "MIT",
 	"homepage": "https://github.com/fcjr/vscode-infiles",
